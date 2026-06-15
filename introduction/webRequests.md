@@ -1,0 +1,45 @@
+## Making Web Requests in GO
+
+In GO, a web requests refers to the HTTP request made to the server. The requests are used to retrieve or send data over the internet to interact with application APIs.
+
+In GO, we do that using a package called `net/http` which provides interface to create and send HTTP requests as well as to handle the responses.
+
+We use the package to make a get request calling the function `response,err := http.GET(url)` which returns you 2 things a response and err. 
+Now the res requires a connection in GO you once its task is over you have to close the function manually. via `defer response.Body.Close()`.
+
+Once that is done you get the whole response in your response field so you need to first make it accessible using the ioutil library as follows
+`content,err:=ioutil.ReadAll(respnose.Body)`. The content here is still in the form of bytes so you need to then convert it to a string to be finally accessible.
+Heres the complete walk around code. 
+```go
+package main
+
+import (
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+func main() {
+	var url string = "https://jsonplaceholder.typicode.com/todos/1"
+	response, err := http.Get(url)
+	if err != nil {
+		fmt.Println("error in making API Call")
+		return
+	}
+
+	defer response.Body.Close()
+
+	// reading the data
+	content, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println("error in reading API Call")
+		return
+	}
+
+	parsedData := string(content)
+	fmt.Println(parsedData)
+}
+
+```
+
+
