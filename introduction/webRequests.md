@@ -41,5 +41,43 @@ func main() {
 }
 
 ```
+--- 
+
+Another way of making API Calls in GO is by using `http.NewRequest()` method. it takes in 3 parameters
+- the method type which can be PUT,POST,GET or `http.newMethodPUT` similarly for rest of the method
+- then url you want to send your data to 
+- the ioreader for the data
+
+Once this is done you set the header using `req.Header.Set('header_name','header_value')`
+and after this your req is ready to go.
+But without a client a req cannot be fired so you make a client using `client:=http.Client` and to fire the request we do `client.do(req)` which returns the res and err. 
+
+
+## Handling URLs in GO
+
+in GO the `net/url` package provides functionalities to parse, construcut and manipulates URL. Parsing of those URLs can be done using url.
+URL Components
+
+- Schema : indicates the protocol used (http/https)
+- Host : Specify the domain name additionally the port number 
+- Path : represents the path to find the resource on the server
+- RawQuery: contains query parameters (key value pair ending with `?` and `&`
+
+
+## JSON 
+in GO we use the package `encoding/json` to encode and decode JSON values. in GO `encoding` of values is termed as `marshalling` and `decoding` of those values are termed as `unmarshalling`.
+
+to create a JSON in GO, we create a struct with the datatypes of the row and what will that JSON values be termed. Here's an example
+
+```go
+type Person struct {
+    Name String "json:name"
+    Age  int    "json:age"
+    IsAdult bool "json:is_adult"
+}
+```
+
+To Convert struct to JSON, we use `jsonData,err := json.Marshal(person)` 
+To Convert JSON to struct we use  `err:=json.Unmarshal(person,&data)`
 
 
